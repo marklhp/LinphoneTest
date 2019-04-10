@@ -23,6 +23,7 @@ import org.linphone.core.ProxyConfig;
 import org.linphone.core.RegistrationState;
 
 import java.lang.ref.WeakReference;
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     String username = "69802008619";
@@ -49,6 +50,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             requestPermissions(strings, 0);
         }
+        Objects.requireNonNull(getSupportActionBar()).hide();
         LinphoneManager.initLoggingService(true, true, getString(R.string.app_name));
     }
 
@@ -91,6 +93,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         public void onGlobalStateChanged(Core lc, GlobalState gstate, String message) {
             super.onGlobalStateChanged(lc, gstate, message);
             Log.d("linphone_初始化状态=", gstate.name() + "===" + message);
+            binding.setInitState("初始化状态"+message);
             /**
              * 初始化成功
              */
@@ -117,6 +120,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             /**
              * 通话状态
              */
+            binding.setCallstate("通话状态"+message);
 
         }
 
@@ -128,6 +132,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
              * 注册成功
              */
             SipUtils.getIns().setRegister(cstate == RegistrationState.Ok);
+            binding.setRegisterState("注册状态"+message);
         }
     };
 }
