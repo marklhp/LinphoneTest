@@ -1,5 +1,3 @@
-# LinphoneTest
-linphone封装后测试地址
 # sipphone使用
 > 使用sipphonp最主要是调用SipUtil类的方法来操作打电话功能,所以需要先创建SipUtil实例，通过静态方法getIns（）创建
 
@@ -88,7 +86,17 @@ boolean | 判断网络快慢（没用上）
 > 使用方法：SipUtils.getIns().answer(context);
 
 ---
-7. 电话静音（该方法属于音频管理方法，不想用的话可以自己封装，需要动态获取RECORD_AUDIO权限）
+7. 退出登录
+
+```
+public void signOut()
+```
+
+> 使用方法：SipUtils.getIns().signOut();
+注：该方法必须在主线程执行
+
+---
+8. 电话静音（该方法属于音频管理方法，不想用的话可以自己封装，需要动态获取RECORD_AUDIO权限）
 
 ```
 public void switchingMute(boolean isMicMuted) {
@@ -101,7 +109,7 @@ isMicMuted | 是否静音 true静音/false不静音
 
 ---
 
-8. 免提（该方法属于音频管理方法，不想用的话可以自己封装，需要动态获取RECORD_AUDIO权限）
+9. 免提（该方法属于音频管理方法，不想用的话可以自己封装，需要动态获取RECORD_AUDIO权限）
 
 ```
 public void switchingSpeakers(boolean isSpeakers)
@@ -113,10 +121,51 @@ isSpeakers | 是否打开免提，true打开免提/false关掉免提
 > 使用方法：SipUtils.getIns().switchingSpeakers(isSpeakerEnabled);
 
 ---
-### CoreListenerStub 接口释义
 
 
+### CoreListenerStub 接口释义 
 
+1. 初始化状态监听
+```
+public void onGlobalStateChanged(Core lc, GlobalState gstate, String message)
+```
+Parameters  |参数释义
+---|---
+Core | 当前的核心类
+GlobalState | 初始化状态值（枚举类型）
+message | 初始化状态释义信息
 
+---
+2. 注册状态监听
+```
+public void onRegistrationStateChanged(Core lc, ProxyConfig cfg, RegistrationState cstate, String message)
 
+```
+Parameters  |参数释义
+---|---
+lc | 当前的核心类
+cfg | 代理属性信息
+cstate | 注册状态值（枚举类型）
+message | 注册状态释义信息
 
+---
+3. 通话状态监听
+```
+public void onCallStateChanged(Core lc, Call call, Call.State cstate, String message) 
+
+```
+Parameters  |参数释义
+---|---
+lc | 当前的核心类
+call | 当前电话实例
+cstate | 通话状态值（枚举类型）
+message | 通话状态释义信息
+
+---
+注：CoreListenerStub中有很多监听回调接口，常用的是这三种
+
+---
+
+### 注意事项
+1. 注册需要等到初始化成功后执行
+2. 监听方法不一定主线程执行
