@@ -40,6 +40,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //        String domain="ose7.italkbb.com:10000";
     ActivityMainBinding binding;
     private boolean isSpeakerEnabled = false, isMicMuted = false;
+    private boolean isPlayKey;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,7 +86,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.linphone_tv7:
                 SipUtils.getIns().signOut();
                 break;
-
+            case R.id.linphone_tv8:
+                if (isPlayKey){
+                    SipUtils.getIns().stopDtmf();
+                }else {
+                    SipUtils.getIns().playDtmf(getContentResolver(), '6');
+                }
+                isPlayKey=!isPlayKey;
+                break;
+            case R.id.linphone_tv9:
+                SipUtils.getIns().sendDtmf('6');
+                break;
         }
     }
 
