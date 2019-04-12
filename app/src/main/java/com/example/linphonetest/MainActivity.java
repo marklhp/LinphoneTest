@@ -104,13 +104,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 SipUtils.getIns().registerSip(username,
                         password,
                         displayname,
-                        domain);
+                        domain,new WeakReference<Context>(MainActivity.this));
                 Log.d("linphone_登录时间=", System.currentTimeMillis() - time1 + "");
-                try {
-                    LinphoneManager.getInstance(MainActivity.this).initLiblinphone(lc);
-                } catch (CoreException e) {
-                    e.printStackTrace();
-                }
+
             }
         }
 
